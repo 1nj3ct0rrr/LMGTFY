@@ -20,8 +20,8 @@ You can view this project as a demo using the free hosting service [GitHub](http
 
 ## ScreenShots
 
-![Light](https://uupload.ir/files/c4h6_light.png)
-![Dark](https://uupload.ir/files/1o7b_dark.png)
+![Light](https://uupload.ir/files/bw3h_light.jpg)
+![Dark](https://uupload.ir/files/9xc9_dark.jpg)
 
 ## Follow
 
