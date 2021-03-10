@@ -8,6 +8,16 @@ But this project is very simple to use and does not require difficult tasks 😁
 
 ## Demo
 
+You can view this project as a demo using the free hosting service [GitHub](https://github.com/) or [Repl.it](https://repl.it/) 😉
+
+<a href="https://LMGTFY.hesamtavakoli06.repl.co">
+  <img src="https://img.shields.io/badge/Repl.it-gray?style=flat&logo=repl.it&labelColor=gray">
+</a>
+
+<a href="https://1nj3ct0rrr.github.io/LMGTFY/">
+  <img src="https://img.shields.io/badge/GitHub-black?style=flat&logo=github&labelColor=black">
+</a>
+
 ## ScreenShots
 
 ## Follow
