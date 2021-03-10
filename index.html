@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" charset="utf-8">
+    <title>lmgtfy - Handiak</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+</head>
+<style>
+    html {
+        background-color: #FAFAFA;
+    }
+    
+    #pointer {
+        position: absolute;
+        left: 15px;
+        width: 40px;
+        height: 40px;
+    }
+    
+    #main {
+        width: 800px;
+        margin: auto;
+        text-align: center;
+    }
+    
+    @font-face {
+        font-family: 'Product Sans';
+        font-style: normal;
+        font-weight: 400;
+        src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/productsans/v5/HYvgU2fE2nRJvZ5JFAumwegdm0LZdjqr5-oayXSOefg.woff2) format('woff2');
+    }
+    
+    h1 {
+        font-family: Product Sans;
+        font-size: 50px;
+        margin-bottom: 0;
+    }
+    
+    h2 {
+        font-family: Product Sans;
+        text-transform: uppercase;
+        margin-bottom: 80px;
+        ;
+    }
+    
+    i {
+        font-style: normal;
+    }
+    
+    i:nth-child(3n+1) {
+        color: #4285f4;
+    }
+    
+    i:nth-child(4n+2) {
+        color: #EA4335;
+    }
+    
+    i:nth-child(3) {
+        color: #FBBC05;
+    }
+    
+    i:nth-child(5) {
+        color: #34A853;
+    }
+    
+    #bar {
+        margin: auto;
+        background-color: white;
+        width: 630px;
+        height: 44px;
+        box-shadow: 0px 5px 12px 2px rgba(0, 0, 0, 0.49);
+    }
+    
+    #searchBar {
+        font: 16px arial, sans-serif;
+        float: left;
+        border: none;
+        background: none;
+        margin-left: 16px;
+        margin-top: 5px;
+        width: 574px;
+        height: 34px;
+    }
+    
+    input:focus {
+        outline: none;
+    }
+    
+    #runGoogle {
+        border: none;
+        background: url('img/search.svg');
+        background-size: 18px 30px;
+        background-repeat: no-repeat;
+        background-position: 0 5px;
+        width: 24px;
+        height: 42px;
+    }
+</style>
+
+<body>
+    <div id="main">
+        <img id="pointer" src="img/pointer.png"></img>
+        <header>
+            <h1><i>Let</i> <i>Me</i> <i>Google</i> <i>That</i> <i>For</i> <i>You</i></h1>
+            <h2>(<i>b</i><i>i</i><i>t</i><i>c</i><i>h</i>)</h2>
+        </header>
+        <content>
+            <form method="GET" action="https://www.google.com/search">
+                <div id="bar">
+                    <input id="searchBar" readonly type="text" name="q">
+                    <input id="runGoogle" readonly type="submit" value="">
+                </div>
+            </form>
+        </content>
+    </div>
+</body>
+<script>
+    var txt;
+
+    function writeText() {
+        var speed = parseInt((Math.random() * 120) - 60);
+        setTimeout(function() {
+            if ($("#searchBar").val().length < txt.length) {
+                var error = (Math.random() * 20) < 1;
+                if (error) {
+                    var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                    $("#searchBar").val($("#searchBar").val() + chars[parseInt(Math.random() * 62)]);
+                    setTimeout(function() {
+                        $("#searchBar").val($("#searchBar").val().slice(0, $("#searchBar").val().length - 2));
+                        writeText(txt);
+                    }, 200);
+                } else {
+                    $("#searchBar").val($("#searchBar").val() + txt[$("#searchBar").val().length]);
+                    writeText(txt);
+                }
+            } else {
+                moveToRunGoogle();
+            }
+        }, 90 + speed);
+    }
+
+    function moveToSearchBar() {
+        var x = $("#searchBar").offset().left - 20;
+        var y = $("#searchBar").offset().top;
+        $("#pointer").animate({
+            left: x,
+            top: y
+        }, 400, "swing", function() {
+            $("#pointer").prop("src", "img/cursor.png");
+            writeText();
+        });
+    }
+
+    function moveToRunGoogle() {
+        var x = $("#runGoogle").offset().left - 10;
+        var y = $("#runGoogle").offset().top;
+        $("#pointer").animate({
+            left: x,
+            top: y
+        }, 400, "swing", function() {
+            $("#pointer").prop("src", "img/pointer.png");
+            runGoogle();
+        });
+    }
+
+    function runGoogle() {
+        setTimeout(function() {
+            $("#runGoogle").click();
+        }, 1000);
+    }
+
+    function setText() {
+        var vars = {};
+        window.location.href.replace(location.hash, '').replace(new RegExp('[\+]', 'gi'), ' ').replace(
+            /[?&]+([^=&]+)=?([^&]*)?/gi,
+            function(m, key, value) {
+                value = decodeURIComponent(value);
+                var a = "<textarea class='hidden' onkeyup='auto_grow(this)' readonly>",
+                    b = "</textarea>";
+                try {
+                    $.parseXML(value);
+                } catch (e) {
+                    a = "";
+                    b = "";
+                }
+                value = a + value + b;
+                vars[key] = value !== undefined ? value : '';
+            }
+        );
+        if (vars["q"]) {
+            txt = vars["q"];
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function start() {
+        if (setText()) {
+            moveToSearchBar();
+        } else {
+            $("#pointer").remove();
+            $("content form").prop("action", document.location);
+            $("#searchBar").removeAttr('readonly').focus();
+            $("#runGoogle").removeAttr('readonly');
+        }
+    }
+
+    start();
+</script>
+
+</html>
